@@ -1,0 +1,13 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+  datasource:
+    url: jdbc:h2:mem:medium_test;MODE=MYSQL
+  jpa:
+    hibernate:
+      ddl-auto: create
+custom:
+  tempDirPath: /tmp/medium_test/temp
+  genFile:
+    dirPath: /tmp/medium_test
