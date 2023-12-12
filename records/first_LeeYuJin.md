@@ -8,8 +8,8 @@
 ### **엔드 포인트**
 
 ### **가입**
-- [ ]  GET /member/join : 가입 폼
-- [ ]  POST /member/join : 가입 폼 처리
+- [x]  GET /member/join : 가입 폼
+- [x]  POST /member/join : 가입 폼 처리
 
 ### **로그인**
 

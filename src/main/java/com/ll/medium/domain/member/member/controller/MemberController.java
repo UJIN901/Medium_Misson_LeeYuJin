@@ -42,4 +42,9 @@ public class MemberController {
 
         return rq.redirectOrBack(joinRs, "/member/login");
     }
+
+    @GetMapping("/login")
+    public String showLogin(){
+        return "domain/member/member/login";
+    }
 }
