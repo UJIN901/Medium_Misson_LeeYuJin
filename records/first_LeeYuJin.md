@@ -13,8 +13,8 @@
 
 ### **로그인**
 
-- [ ]  GET /member/login : 로그인 폼
-- [ ]  POST /member/login : 로그인 폼 처리
+- [x]  GET /member/login : 로그인 폼
+- [x]  POST /member/login : 로그인 폼 처리
 
 ### **로그아웃**
 
