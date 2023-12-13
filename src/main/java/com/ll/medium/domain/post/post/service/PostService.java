@@ -60,4 +60,18 @@ public class PostService {
 
         return RsData.of("200", "%d번째 글이 수정되었습니다.".formatted(post.getId()), post);
     }
+
+    public boolean canDelete(Member member, Post post) {
+        if (member == null) return false;
+
+        if (member.isAdmin()) return true;
+
+        return post.getAuthor().equals(member);
+    }
+    @Transactional
+    public RsData<Post> delete(Post post) {
+        postRepository.delete(post);
+
+        return RsData.of("200", "%d번째 글이 삭제되었습니다.".formatted(post.getId()), post);
+    }
 }

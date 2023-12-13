@@ -95,5 +95,17 @@ public class PostController {
         return rq.redirect("/post/{id}", modifyRs.getMsg());
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/{id}/delete")
+    String delete(@PathVariable long id) {
+        Post post = postService.findById(id).get();
+
+        if (!postService.canDelete(rq.getMember(), post)) throw new RuntimeException("삭제권한이 없습니다.");
+
+        RsData<Post> deleteRs = postService.delete(post);
+
+        return rq.redirect("/post/list", deleteRs.getMsg());
+    }
+
 
 }

@@ -46,4 +46,8 @@ public class Member {
         return authorities;
     }
 
+    public boolean isAdmin() {
+        return username.equals("admin") || username.equals("system");
+    }
+
 }

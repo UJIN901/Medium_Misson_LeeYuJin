@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="/resource/global/global.css">
     <script src="/resource/global/global.js"></script>
 
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     <script>
         const urlParams = getUrlParams(location.href);
     </script>
