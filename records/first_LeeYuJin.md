@@ -18,7 +18,7 @@
 
 ### **로그아웃**
 
-- [ ]  POST /member/logout : 로그아웃
+- [x]  POST /member/logout : 로그아웃
 
 ### **폼**
 
