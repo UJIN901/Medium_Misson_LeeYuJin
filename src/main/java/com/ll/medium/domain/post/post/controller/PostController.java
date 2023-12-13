@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/post")
@@ -75,6 +72,27 @@ public class PostController {
         rq.setAttribute("post", post);
 
         return "domain/post/post/modify.html";
+    }
+
+    @Getter
+    @Setter
+    public static class ModifyForm{
+        @NotBlank
+        private String title;
+        @NotBlank
+        private String body;
+        private Boolean isPublished;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/{id}/modify")
+    public String modify(@PathVariable long id, @Valid ModifyForm modifyForm){
+        Post post = postService.findById(id).get();
+        if (!postService.canModify(rq.getMember(), post)) throw new RuntimeException("수정권한이 없습니다.");
+
+        RsData<Post> modifyRs = postService.modify(post, modifyForm.title, modifyForm.body, modifyForm.getIsPublished());
+
+        return rq.redirect("/post/{id}", modifyRs.getMsg());
     }
 
 

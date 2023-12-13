@@ -51,4 +51,13 @@ public class PostService {
 
         return post.getAuthor().equals(member);
     }
+
+    @Transactional
+    public RsData<Post> modify(Post post, String title, String body, Boolean isPublished) {
+        post.setTitle(title);
+        post.setBody(body);
+        post.setIsPublished(isPublished);
+
+        return RsData.of("200", "%d번째 글이 수정되었습니다.".formatted(post.getId()), post);
+    }
 }
