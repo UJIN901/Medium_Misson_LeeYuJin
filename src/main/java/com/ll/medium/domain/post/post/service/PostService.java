@@ -74,4 +74,8 @@ public class PostService {
 
         return RsData.of("200", "%d번째 글이 삭제되었습니다.".formatted(post.getId()), post);
     }
+
+    public Object findByAuthorUsernameAndIsPublishedOrderByIdDesc(String username, boolean isPublished) {
+        return postRepository.findByAuthorUsernameAndIsPublishedOrderByIdDesc(username, isPublished);
+    }
 }

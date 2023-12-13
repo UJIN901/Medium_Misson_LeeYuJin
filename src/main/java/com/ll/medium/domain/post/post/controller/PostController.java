@@ -26,6 +26,12 @@ public class PostController {
         return "domain/post/post/detail";
     }
 
+    @GetMapping("/{username}")
+    public String showUserPostList(@PathVariable String username){
+        rq.setAttribute("posts", postService.findByAuthorUsernameAndIsPublishedOrderByIdDesc(username, true));
+        return "domain/post/post/userPostList";
+    }
+
     @GetMapping("/list")
     public String showList(){
         rq.setAttribute("posts", postService.findByIsPublishedOrderByIdDesc(true));
@@ -97,7 +103,7 @@ public class PostController {
 
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}/delete")
-    String delete(@PathVariable long id) {
+    public String delete(@PathVariable long id) {
         Post post = postService.findById(id).get();
 
         if (!postService.canDelete(rq.getMember(), post)) throw new RuntimeException("삭제권한이 없습니다.");
@@ -106,6 +112,5 @@ public class PostController {
 
         return rq.redirect("/post/list", deleteRs.getMsg());
     }
-
 
 }

@@ -11,4 +11,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByIsPublishedOrderByIdDesc(boolean isPublished);
 
     List<Post> findByAuthorIdOrderByIdDesc(Long id);
+
+    List<Post> findByAuthorUsernameAndIsPublishedOrderByIdDesc(String username, boolean isPublished);
 }
