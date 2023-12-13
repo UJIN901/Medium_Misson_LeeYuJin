@@ -1,6 +1,7 @@
 package com.ll.medium.global.rq;
 
 import com.ll.medium.global.rsData.RsData;
+import com.ll.medium.global.security.MemberDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -49,12 +50,12 @@ public class Rq {
         return redirect(path, rs.getMsg());
     }
 
-    public User getUser() {
+    public MemberDetails getUser() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(Authentication::getPrincipal)
                 .filter(it -> it instanceof User)
-                .map(it -> (User) it)
+                .map(it -> (MemberDetails) it)
                 .orElse(null);
     }
 

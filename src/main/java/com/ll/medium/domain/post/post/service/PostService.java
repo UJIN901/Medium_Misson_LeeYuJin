@@ -31,7 +31,14 @@ public class PostService {
         return postRepository.findTop30ByIsPublishedOrderByIdDesc(isPublished);
     }
 
+    public Object findByIsPublishedOrderByIdDesc(boolean isPublished) {
+        return postRepository.findByIsPublishedOrderByIdDesc(isPublished);
+    }
+
+
     public Optional<Post> findById(long id) {
         return postRepository.findById(id);
     }
+
+    public Object findByAuthor_IdOrderByIdDesc(long authorId){return postRepository.findByAuthor_IdOrderByIdDesc(authorId); }
 }

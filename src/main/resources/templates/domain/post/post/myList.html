@@ -1,0 +1,16 @@
+<html layout:decorate="~{global/usrLayout}">
+<head>
+    <title>내 글 목록</title>
+</head>
+
+<div layout:fragment="content">
+    <h1>내 글 목록</h1>
+
+    <ul>
+        <li th:each="post : ${posts}">
+            <a th:href="|/post/${post.id}|" th:text="${post.title}"></a>
+        </li>
+    </ul>
+</div>
+
+</html>

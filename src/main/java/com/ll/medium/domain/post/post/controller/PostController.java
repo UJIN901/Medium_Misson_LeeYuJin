@@ -3,6 +3,7 @@ package com.ll.medium.domain.post.post.controller;
 import com.ll.medium.domain.post.post.service.PostService;
 import com.ll.medium.global.rq.Rq;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,19 @@ public class PostController {
         return "domain/post/post/detail";
     }
 
+    @GetMapping("/list")
+    public String showList(){
+        rq.setAttribute("posts", postService.findByIsPublishedOrderByIdDesc(true));
+        return "domain/post/post/list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/myList")
+    public String showMyList(){
+        Long authorId = rq.getUser().getId();
+        rq.setAttribute("posts", postService.findByAuthor_IdOrderByIdDesc(authorId));
+        return "domain/post/post/myList";
+    }
 
 
 }
