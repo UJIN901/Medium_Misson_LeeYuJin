@@ -66,5 +66,16 @@ public class PostController {
         return rq.redirect("/post/myList", writeRs.getMsg());
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{id}/modify")
+    public String showModify(@PathVariable long id){
+        Post post = postService.findById(id).get();
+        if (!postService.canModify(rq.getMember(), post)) throw new RuntimeException("수정권한이 없습니다.");
+
+        rq.setAttribute("post", post);
+
+        return "domain/post/post/modify.html";
+    }
+
 
 }

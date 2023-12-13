@@ -57,8 +57,8 @@
 
 ### **글 작성**
 
-- [ ]  GET /post/write : 글 작성 폼
-- [ ]  POST /post/write : 글 작성 처리
+- [x]  GET /post/write : 글 작성 폼
+- [x]  POST /post/write : 글 작성 처리
 
 ### **글 수정**
 

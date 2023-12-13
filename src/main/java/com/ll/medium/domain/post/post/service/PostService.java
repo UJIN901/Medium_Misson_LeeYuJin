@@ -45,4 +45,10 @@ public class PostService {
     public Object findByAuthorIdOrderByIdDesc(Long id) {
         return postRepository.findByAuthorIdOrderByIdDesc(id);
     }
+
+    public boolean canModify(Member member, Post post) {
+        if (member == null) return false;
+
+        return post.getAuthor().equals(member);
+    }
 }

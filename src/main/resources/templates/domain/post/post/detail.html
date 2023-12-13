@@ -18,6 +18,10 @@
         <h3>내용</h3>
         <div style="white-space: pre-wrap;" th:text="${post.body}"></div>
     </div>
+    <div>
+        <a th:if="${@postService.canModify(@rq.member, post)}"
+           th:href="|/post/${post.id}/modify|">글 수정</a>
+    </div>
 </div>
 
 </body>
