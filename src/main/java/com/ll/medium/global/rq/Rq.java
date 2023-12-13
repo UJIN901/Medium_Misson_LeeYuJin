@@ -1,7 +1,9 @@
 package com.ll.medium.global.rq;
 
+import com.ll.medium.domain.member.member.entity.Member;
+import com.ll.medium.domain.member.member.service.MemberService;
 import com.ll.medium.global.rsData.RsData;
-import com.ll.medium.global.security.MemberDetails;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,14 @@ import java.util.Optional;
 public class Rq {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
+    private final MemberService memberService;
+    private User user;
+    private Member member;
+
+    @PostConstruct
+    public void init() {
+        this.user = getUser();
+    }
 
     public String redirect(String url, String msg) {
         msg = URLEncoder.encode(msg, StandardCharsets.UTF_8);
@@ -50,13 +60,27 @@ public class Rq {
         return redirect(path, rs.getMsg());
     }
 
-    public MemberDetails getUser() {
+    public User getUser() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(Authentication::getPrincipal)
                 .filter(it -> it instanceof User)
-                .map(it -> (MemberDetails) it)
+                .map(it -> (User) it)
                 .orElse(null);
+    }
+    private String getMemberUsername() {
+        return user.getUsername();
+    }
+
+    public Member getMember() {
+        if (!isLogin()) {
+            return null;
+        }
+
+        if (member == null)
+            member = memberService.findByUsername(getMemberUsername()).get();
+
+        return member;
     }
 
     public boolean isLogin() {

@@ -31,5 +31,5 @@ public class Post {
     private Member author;
     private String title;
     private String body;
-    private boolean isPublished;
+    private Boolean isPublished;
 }

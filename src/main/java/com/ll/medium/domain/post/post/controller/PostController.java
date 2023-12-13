@@ -2,11 +2,16 @@ package com.ll.medium.domain.post.post.controller;
 
 import com.ll.medium.domain.post.post.service.PostService;
 import com.ll.medium.global.rq.Rq;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -31,9 +36,30 @@ public class PostController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/myList")
     public String showMyList(){
-        Long authorId = rq.getUser().getId();
-        rq.setAttribute("posts", postService.findByAuthor_IdOrderByIdDesc(authorId));
+        rq.setAttribute("posts", postService.findByAuthorIdOrderByIdDesc(rq.getMember().getId()));
         return "domain/post/post/myList";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/write")
+    public String showWrite(){
+        return "domain/post/post/write";
+    }
+
+    @Getter
+    @Setter
+    public static class WriteForm{
+        @NotBlank
+        private String title;
+        @NotBlank
+        private String body;
+        private Boolean isPublished;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/write")
+    public void write(@Valid WriteForm writeForm){
+        return;
     }
 
 

@@ -40,5 +40,7 @@ public class PostService {
         return postRepository.findById(id);
     }
 
-    public Object findByAuthor_IdOrderByIdDesc(long authorId){return postRepository.findByAuthor_IdOrderByIdDesc(authorId); }
+    public Object findByAuthorIdOrderByIdDesc(Long id) {
+        return postRepository.findByAuthorIdOrderByIdDesc(id);
+    }
 }
