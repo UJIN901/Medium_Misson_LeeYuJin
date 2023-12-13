@@ -1,7 +1,9 @@
 package com.ll.medium.domain.post.post.controller;
 
+import com.ll.medium.domain.post.post.entity.Post;
 import com.ll.medium.domain.post.post.service.PostService;
 import com.ll.medium.global.rq.Rq;
+import com.ll.medium.global.rsData.RsData;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -53,13 +55,15 @@ public class PostController {
         private String title;
         @NotBlank
         private String body;
-        private Boolean isPublished;
+        private Boolean isPublished = false;
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
-    public void write(@Valid WriteForm writeForm){
-        return;
+    public String write(@Valid WriteForm writeForm){
+        RsData<Post> writeRs = postService.write(rq.getMember(), writeForm.getTitle(), writeForm.getBody(), writeForm.getIsPublished());
+
+        return rq.redirect("/post/myList", writeRs.getMsg());
     }
 
 

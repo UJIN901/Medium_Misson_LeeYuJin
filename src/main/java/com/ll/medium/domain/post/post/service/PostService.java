@@ -3,6 +3,7 @@ package com.ll.medium.domain.post.post.service;
 import com.ll.medium.domain.member.member.entity.Member;
 import com.ll.medium.domain.post.post.entity.Post;
 import com.ll.medium.domain.post.post.repository.PostRepository;
+import com.ll.medium.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     @Transactional
-    public void write(Member author, String title, String body, boolean isPublished) {
+    public RsData<Post> write(Member author, String title, String body, boolean isPublished) {
         Post post = Post.builder()
                 .author(author)
                 .title(title)
@@ -25,6 +26,7 @@ public class PostService {
                 .build();
 
         postRepository.save(post);
+        return RsData.of("200", "%d번째 글이 등록되었습니다.".formatted(post.getId()), post);
     }
 
     public Object findTop30ByIsPublishedOrderByIdDesc(boolean isPublished) {
