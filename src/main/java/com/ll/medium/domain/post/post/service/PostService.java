@@ -1,6 +1,7 @@
 package com.ll.medium.domain.post.post.service;
 
 import com.ll.medium.domain.member.member.entity.Member;
+import com.ll.medium.domain.member.member.repository.MemberRepository;
 import com.ll.medium.domain.post.post.entity.Post;
 import com.ll.medium.domain.post.post.repository.PostRepository;
 import com.ll.medium.global.rsData.RsData;
@@ -15,6 +16,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public RsData<Post> write(Member author, String title, String body, boolean isPublished) {
@@ -75,7 +77,16 @@ public class PostService {
         return RsData.of("200", "%d번째 글이 삭제되었습니다.".formatted(post.getId()), post);
     }
 
+
     public Object findByAuthorUsernameAndIsPublishedOrderByIdDesc(String username, boolean isPublished) {
         return postRepository.findByAuthorUsernameAndIsPublishedOrderByIdDesc(username, isPublished);
+    }
+
+    public boolean canAccessPost(Post post, Member member, long id) {
+        if(post == null){return false;}
+        if(member == null){return false;}
+        if(!post.getIsPublished()){return false;}
+
+        return post.getAuthor().equals(member);
     }
 }
