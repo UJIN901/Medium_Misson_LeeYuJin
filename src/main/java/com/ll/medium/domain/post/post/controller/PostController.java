@@ -14,39 +14,38 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/post")
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
     private final Rq rq;
 
-    @GetMapping("/{id}")
+    @GetMapping("/post/{id}")
     public String showPost(@PathVariable long id){
         rq.setAttribute("post", postService.findById(id).get());
         return "domain/post/post/detail";
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/b/{username}")
     public String showUserPostList(@PathVariable String username){
         rq.setAttribute("posts", postService.findByAuthorUsernameAndIsPublishedOrderByIdDesc(username, true));
         return "domain/post/post/userPostList";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/post/list")
     public String showList(){
         rq.setAttribute("posts", postService.findByIsPublishedOrderByIdDesc(true));
         return "domain/post/post/list";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/myList")
+    @GetMapping("/post/myList")
     public String showMyList(){
         rq.setAttribute("posts", postService.findByAuthorIdOrderByIdDesc(rq.getMember().getId()));
         return "domain/post/post/myList";
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/write")
+    @GetMapping("/post/write")
     public String showWrite(){
         return "domain/post/post/write";
     }
@@ -62,7 +61,7 @@ public class PostController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/write")
+    @PostMapping("/post/write")
     public String write(@Valid WriteForm writeForm){
         RsData<Post> writeRs = postService.write(rq.getMember(), writeForm.getTitle(), writeForm.getBody(), writeForm.getIsPublished());
 
@@ -70,14 +69,14 @@ public class PostController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{id}/modify")
+    @GetMapping("/post/{id}/modify")
     public String showModify(@PathVariable long id){
         Post post = postService.findById(id).get();
         if (!postService.canModify(rq.getMember(), post)) throw new RuntimeException("수정권한이 없습니다.");
 
         rq.setAttribute("post", post);
 
-        return "domain/post/post/modify.html";
+        return "domain/post/post/modify";
     }
 
     @Getter
@@ -91,18 +90,18 @@ public class PostController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PutMapping("/{id}/modify")
+    @PutMapping("/post/{id}/modify")
     public String modify(@PathVariable long id, @Valid ModifyForm modifyForm){
         Post post = postService.findById(id).get();
         if (!postService.canModify(rq.getMember(), post)) throw new RuntimeException("수정권한이 없습니다.");
 
         RsData<Post> modifyRs = postService.modify(post, modifyForm.title, modifyForm.body, modifyForm.getIsPublished());
 
-        return rq.redirect("/post/{id}", modifyRs.getMsg());
+        return rq.redirect("/post/" + id, modifyRs.getMsg());
     }
 
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/post/{id}/delete")
     public String delete(@PathVariable long id) {
         Post post = postService.findById(id).get();
 
