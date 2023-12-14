@@ -33,6 +33,7 @@ public class Rq {
         this.user = getUser();
     }
 
+    // URL 리다이렉션 및 메시지 전송
     public String redirect(String url, String msg) {
         msg = URLEncoder.encode(msg, StandardCharsets.UTF_8);
 
@@ -55,11 +56,13 @@ public class Rq {
         return "global/js";
     }
 
+    // RsData에 따라 리다이렉션 또는 히스토리 백 수행
     public String redirectOrBack(RsData<?> rs, String path) {
         if(rs.isFail()) return historyBack(rs.getMsg());
         return redirect(path, rs.getMsg());
     }
 
+    // 스프링 시큐리티 이용 현재 사용자 정보를 가져온다.
     public User getUser() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)

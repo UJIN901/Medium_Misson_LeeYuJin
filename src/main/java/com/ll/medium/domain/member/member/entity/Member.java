@@ -34,11 +34,14 @@ public class Member {
     private String username;
     private String password;
 
+    // 권환을 변환하는 메서드
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
+        // 기본 권한으로 ROLE_MEMBER 부여
         authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
 
+        // 관리자의 경우 추가로 ROLE_ADMIN 부여
         if (List.of("system", "admin").contains(username)) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
@@ -46,6 +49,7 @@ public class Member {
         return authorities;
     }
 
+    // 관리자 확인 메서드
     public boolean isAdmin() {
         return username.equals("admin") || username.equals("system");
     }

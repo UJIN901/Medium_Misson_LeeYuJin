@@ -22,12 +22,14 @@ public class MemberController {
     private final MemberService memberService;
     private final Rq rq;
 
+    // 회원 가입 페이지로 이동
     @PreAuthorize("isAnonymous()")
     @GetMapping("/join")
     public String join() {
         return "domain/member/member/join";
     }
 
+    // 회원 가입 처리
     @Getter
     @Setter
     public static class JoinForm{
@@ -39,14 +41,18 @@ public class MemberController {
         private String passwordConfirm;
     }
 
+    // 회원 가입 요청 처리
     @PreAuthorize("isAnonymous()")
     @PostMapping("/join")
     public String signup(@Valid JoinForm joinForm) {
+        // 회원 가입 서비스 호출
         RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword());
 
+        // 회원 가입 결과에 따라 리다이렉션 수행
         return rq.redirectOrBack(joinRs, "/member/login");
     }
 
+    // 로그인 페이지로 이동
     @GetMapping("/login")
     public String showLogin(){
         return "domain/member/member/login";

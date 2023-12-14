@@ -22,22 +22,27 @@ public class PostController {
     private final MemberService memberService;
     private final Rq rq;
 
+    // 글 상세 페이지 조회
     @GetMapping("/post/{id}")
     public String showPost(@PathVariable long id){
         rq.setAttribute("post", postService.findById(id).get());
         return "domain/post/post/detail";
     }
 
+    // 사용자가 작성한 글 목록 조회
     @GetMapping("/b/{username}")
     public String showUserPostList(@PathVariable String username){
+        // 해당하는 회원이 없는 경우 예외 처리
         if(!memberService.findByUsername(username).isPresent()) throw new RuntimeException("해당하는 회원이 없습니다.");
         rq.setAttribute("posts", postService.findByAuthorUsernameAndIsPublishedOrderByIdDesc(username, true));
         return "domain/post/post/userPostList";
     }
 
+    // 사용자가 작성한 특정 글 상세 페이지 조회
     @GetMapping("/b/{username}/{id}")
     public String showUserPostDetail(@PathVariable String username, @PathVariable long id){
         Post post = postService.findById(id).get();
+        // 글 접근 권한이 없는 경우 예외 처리
         Member member = memberService.findByUsername(username).get();
         if(!postService.canAccessPost(post, member, id)) throw new RuntimeException("해당하는 글이 없거나 비공개 된 글입니다..");
         rq.setAttribute("post", post);
@@ -45,12 +50,14 @@ public class PostController {
         return "domain/post/post/detail";
     }
 
+    // 전체 공개된 글 목록 조회
     @GetMapping("/post/list")
     public String showList(){
         rq.setAttribute("posts", postService.findByIsPublishedOrderByIdDesc(true));
         return "domain/post/post/list";
     }
 
+    // 현재 사용자가 작성한 글 목록 조회
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/post/myList")
     public String showMyList(){
@@ -58,12 +65,14 @@ public class PostController {
         return "domain/post/post/myList";
     }
 
+    // 글 작성 페이지 조회
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/post/write")
     public String showWrite(){
         return "domain/post/post/write";
     }
 
+    // 글 작성 처리
     @Getter
     @Setter
     public static class WriteForm{
@@ -74,6 +83,7 @@ public class PostController {
         private Boolean isPublished = false;
     }
 
+    //글 수정 페이지 조회
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/post/write")
     public String write(@Valid WriteForm writeForm){
@@ -82,10 +92,12 @@ public class PostController {
         return rq.redirect("/post/myList", writeRs.getMsg());
     }
 
+    // 굴 수정 처리
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/post/{id}/modify")
     public String showModify(@PathVariable long id){
         Post post = postService.findById(id).get();
+        // 글 수정 권한이 없는 경우 예외 처리
         if (!postService.canModify(rq.getMember(), post)) throw new RuntimeException("수정권한이 없습니다.");
 
         rq.setAttribute("post", post);
@@ -107,6 +119,7 @@ public class PostController {
     @PutMapping("/post/{id}/modify")
     public String modify(@PathVariable long id, @Valid ModifyForm modifyForm){
         Post post = postService.findById(id).get();
+        // 글 수정 권한이 없는 경우 예외 처리
         if (!postService.canModify(rq.getMember(), post)) throw new RuntimeException("수정권한이 없습니다.");
 
         RsData<Post> modifyRs = postService.modify(post, modifyForm.title, modifyForm.body, modifyForm.getIsPublished());
@@ -114,6 +127,7 @@ public class PostController {
         return rq.redirect("/post/" + id, modifyRs.getMsg());
     }
 
+    // 글 삭제 처리
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/post/{id}/delete")
     public String delete(@PathVariable long id) {
