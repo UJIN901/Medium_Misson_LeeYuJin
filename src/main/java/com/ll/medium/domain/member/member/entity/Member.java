@@ -47,6 +47,11 @@ public class Member {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
+        // 유료 회원의 경우 ROLE_PAID 부여
+        if (Boolean.TRUE.equals(isPaid)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_PAID"));
+        }
+
         return authorities;
     }
 
