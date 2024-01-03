@@ -6,8 +6,8 @@
 
 ## **필수미션 1 : Member 클래스에 `private boolean isPaid` 필드를 추가**
 
-- [ ] 해당 필드가 `true` 인 사람이 로그인할 때, `ROLE_PAID` 권한도 가지도록(스프링 시큐리티)
-- [ ] 해당 필드가 `true` 이면 유료 멤버십 회원 입니다.
+- [x] 해당 필드가 `true` 인 사람이 로그인할 때, `ROLE_PAID` 권한도 가지도록(스프링 시큐리티)
+- [x] 해당 필드가 `true` 이면 유료 멤버십 회원 입니다.
 
 ## **필수미션 2 : Post 클래스에 `private boolean isPaid` 필드를 추가**
 
