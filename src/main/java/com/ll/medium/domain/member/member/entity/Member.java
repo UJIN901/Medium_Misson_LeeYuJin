@@ -33,6 +33,7 @@ public class Member {
 
     private String username;
     private String password;
+    private Boolean isPaid;
 
     // 권환을 변환하는 메서드
     public Collection<? extends GrantedAuthority> getAuthorities() {
