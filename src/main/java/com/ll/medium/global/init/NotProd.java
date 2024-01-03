@@ -27,10 +27,10 @@ public class NotProd {
         return args -> {
             if (memberService.findByUsername("user1").isPresent()) return;
 
-            Member memberUser1 = memberService.join("user1", "1234").getData();
-            Member memberUser2 = memberService.join("user2", "1234").getData();
-            Member memberUser3 = memberService.join("user3", "1234").getData();
-            Member memberUser4 = memberService.join("user4", "1234").getData();
+            Member memberUser1 = memberService.join("user1", "1234", true).getData();
+            Member memberUser2 = memberService.join("user2", "1234", true).getData();
+            Member memberUser3 = memberService.join("user3", "1234", true).getData();
+            Member memberUser4 = memberService.join("user4", "1234", true).getData();
 
             postService.write(memberUser1, "제목 1", "내용 1", true);
             postService.write(memberUser1, "제목 2", "내용 2", true);

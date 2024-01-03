@@ -39,6 +39,7 @@ public class MemberController {
         private String password;
         @NotBlank
         private String passwordConfirm;
+        private Boolean isPaid;
     }
 
     // 회원 가입 요청 처리
@@ -46,7 +47,7 @@ public class MemberController {
     @PostMapping("/join")
     public String signup(@Valid JoinForm joinForm) {
         // 회원 가입 서비스 호출
-        RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword());
+        RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getIsPaid());
 
         // 회원 가입 결과에 따라 리다이렉션 수행
         return rq.redirectOrBack(joinRs, "/member/login");
