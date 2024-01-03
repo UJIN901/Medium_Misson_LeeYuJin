@@ -1,11 +1,10 @@
 <html layout:decorate="~{global/usrLayout}">
 <head>
-    <title>홈</title>
+    <title>글 목록</title>
 </head>
 
 <div layout:fragment="content">
-    <h1>메인</h1>
-    <h2>최신 게시물</h2>
+    <h1>글 목록</h1>
 
     <ul>
         <li th:each="post : ${posts}">
