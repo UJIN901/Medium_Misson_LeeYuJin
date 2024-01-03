@@ -60,13 +60,14 @@ public class PostController {
         @NotBlank
         private String body;
         private Boolean isPublished = false;
+        private Boolean isPaid;
     }
 
     //글 수정 페이지 조회
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/write")
     public String write(@Valid WriteForm writeForm){
-        RsData<Post> writeRs = postService.write(rq.getMember(), writeForm.getTitle(), writeForm.getBody(), writeForm.getIsPublished());
+        RsData<Post> writeRs = postService.write(rq.getMember(), writeForm.getTitle(), writeForm.getBody(), writeForm.getIsPublished(), writeForm.getIsPaid());
 
         return rq.redirect("/post/myList", writeRs.getMsg());
     }
@@ -92,6 +93,7 @@ public class PostController {
         @NotBlank
         private String body;
         private Boolean isPublished;
+        private Boolean isPaid;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -101,7 +103,7 @@ public class PostController {
         // 글 수정 권한이 없는 경우 예외 처리
         if (!postService.canModify(rq.getMember(), post)) throw new RuntimeException("수정권한이 없습니다.");
 
-        RsData<Post> modifyRs = postService.modify(post, modifyForm.title, modifyForm.body, modifyForm.getIsPublished());
+        RsData<Post> modifyRs = postService.modify(post, modifyForm.title, modifyForm.body, modifyForm.getIsPublished(), modifyForm.getIsPaid());
 
         return rq.redirect("/post/" + id, modifyRs.getMsg());
     }

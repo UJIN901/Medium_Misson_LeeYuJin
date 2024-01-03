@@ -20,12 +20,13 @@ public class PostService {
 
     // 글 작성 서비스
     @Transactional
-    public RsData<Post> write(Member author, String title, String body, boolean isPublished) {
+    public RsData<Post> write(Member author, String title, String body, boolean isPublished, boolean isPaid) {
         Post post = Post.builder()
                 .author(author)
                 .title(title)
                 .body(body)
                 .isPublished(isPublished)
+                .isPaid(isPaid)
                 .build();
 
         postRepository.save(post);
@@ -62,10 +63,12 @@ public class PostService {
 
     // 글 수정 서비스
     @Transactional
-    public RsData<Post> modify(Post post, String title, String body, Boolean isPublished) {
+    public RsData<Post> modify(Post post, String title, String body, Boolean isPublished, Boolean isPaid) {
         post.setTitle(title);
         post.setBody(body);
         post.setIsPublished(isPublished);
+        post.setIsPaid(isPaid);
+
 
         return RsData.of("200", "%d번째 글이 수정되었습니다.".formatted(post.getId()), post);
     }
