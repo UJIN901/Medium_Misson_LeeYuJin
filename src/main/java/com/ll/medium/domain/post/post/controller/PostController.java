@@ -25,7 +25,23 @@ public class PostController {
     // 글 상세 페이지 조회
     @GetMapping("/{id}")
     public String showPost(@PathVariable long id){
-        rq.setAttribute("post", postService.findById(id).get());
+        Post post = postService.findById(id).get();
+
+        boolean canViewPost = true;
+        String message = "";
+
+        // 유료 글인 경우 로그인 여부 & 유료 멤버십 여부 확인
+        if(post.getIsPaid()){
+            // 로그아웃상태이거나, 유료회원 아닌 경우 content에 해당 message가 대신 출력된다.
+            if(rq.isLogout() || !rq.getMember().getIsPaid()){
+                canViewPost = false;
+                message = "이 글은 유료멤버십전용 입니다.";
+            }
+        }
+
+        rq.setAttribute("post", post);
+        rq.setAttribute("canViewPost", canViewPost);
+        rq.setAttribute("message", message);
         return "domain/post/post/detail";
     }
 

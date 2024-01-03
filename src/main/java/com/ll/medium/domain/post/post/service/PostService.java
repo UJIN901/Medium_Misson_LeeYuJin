@@ -103,4 +103,5 @@ public class PostService {
 
         return post.getAuthor().equals(member);
     }
+
 }

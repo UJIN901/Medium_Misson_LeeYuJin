@@ -16,7 +16,9 @@
 
     <div>
         <h3>내용</h3>
-        <div style="white-space: pre-wrap;" th:text="${post.body}"></div>
+        <!-- canViewPost 여부에 따라 실제 글 내용이 보이거나, 보이지 않는다. -->
+        <div style="white-space: pre-wrap;" th:if="${canViewPost}" th:text="${post.body}"></div>
+        <div style="white-space: pre-wrap;" th:if="${!canViewPost}" th:text="${message}"></div>
     </div>
     <div>
         <a th:if="${@postService.canModify(@rq.member, post)}"

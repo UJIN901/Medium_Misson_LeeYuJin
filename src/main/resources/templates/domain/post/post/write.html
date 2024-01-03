@@ -47,7 +47,8 @@
 
         <div>
             <label>유료 회원 전용 글</label>
-            <input type="checkbox" name="isPaid" value="true">
+            <!-- 유료 회원이 아닌 경우 유료 글을 작성하지 못하도록 한다. -->
+            <input type="checkbox" name="isPaid" th:if="${@rq.getMember().getIsPaid()}" value="true">
             <input type="hidden" name="isPaid" value="false">
         </div>
 
